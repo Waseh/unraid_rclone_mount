@@ -28,6 +28,7 @@ MountFolders=\{"downloads/complete,downloads/intermediate,downloads/seeds,movies
 # OPTIONAL SETTINGS
 
 # Add extra paths to mergerfs mount in addition to LocalFilesShare
+MetadataCache="ignore" # Will be mounted as =NC in mergeFS. without trailing slash e.g. /mnt/user/other__remote_mount/or_other_local_folder.  Enter 'ignore' to disable.
 LocalFilesShare2="ignore" # without trailing slash e.g. /mnt/user/other__remote_mount/or_other_local_folder.  Enter 'ignore' to disable
 LocalFilesShare3="ignore"
 LocalFilesShare4="ignore"
@@ -156,6 +157,12 @@ else
 # Create mergerfs mount
 		echo "$(date "+%d.%m.%Y %T") INFO: Creating ${RcloneRemoteName} mergerfs mount."
 # Extra Mergerfs folders
+		if [[  $MetadataCache != 'ignore' ]]; then
+			echo "$(date "+%d.%m.%Y %T") INFO: Adding ${MetadataCache} to ${RcloneRemoteName} mergerfs mount."
+			MetadataCache="$MetadataCache=NC:"
+		else
+			MetadataCache=""
+		fi
 		if [[  $LocalFilesShare2 != 'ignore' ]]; then
 			echo "$(date "+%d.%m.%Y %T") INFO: Adding ${LocalFilesShare2} to ${RcloneRemoteName} mergerfs mount."
 			LocalFilesShare2=":$LocalFilesShare2"
@@ -178,7 +185,7 @@ else
 		mv $MergerFSMountLocation $LocalFilesLocation
 		mkdir -p $MergerFSMountLocation
 # mergerfs mount command
-		mergerfs $LocalFilesLocation:$RcloneMountLocation$LocalFilesShare2$LocalFilesShare3$LocalFilesShare4 $MergerFSMountLocation -o rw,async_read=false,use_ino,allow_other,func.getattr=newest,category.action=all,category.create=ff,cache.files=partial,dropcacheonclose=true
+		mergerfs $MetadataCache$LocalFilesLocation:$RcloneMountLocation$LocalFilesShare2$LocalFilesShare3$LocalFilesShare4 $MergerFSMountLocation -o rw,async_read=false,use_ino,allow_other,func.getattr=newest,category.action=all,category.create=ff,cache.files=partial,dropcacheonclose=true
 # check if mergerfs mount successful
 		echo "$(date "+%d.%m.%Y %T") INFO: Checking if ${RcloneRemoteName} mergerfs mount created."
 		if [[ -f "$MergerFSMountLocation/mountcheck" ]]; then
