@@ -37,7 +37,7 @@ BWLimit3="12M"
 # OPTIONAL SETTINGS
 
 # File containing list of "Cloud only" files to be moved to the cloud from local storage
-FileList="" # Adds custom string to end of checker file.  Useful if you're running multiple jobs against the same remote.
+FileList=""
 
 # Add name to upload job
 JobName="_daily_upload" # Adds custom string to end of checker file.  Useful if you're running multiple jobs against the same remote.
