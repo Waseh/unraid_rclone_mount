@@ -10,7 +10,7 @@
 ####### EDIT ONLY THESE SETTINGS #######
 
 # INSTRUCTIONS
-# 1. Change the name of the rclone remote and shares to match your setup
+# 1. Change the name of the rclone remote and shares to match your setup. NOTE: Don't mount directly in user share. Has to be /mnt/user/share/subfolder.
 # 2. NOTE: enter RcloneRemoteName WITHOUT ':'
 # 3. Optional: include extra folders in mergerfs mount
 
@@ -19,7 +19,7 @@ RcloneRemoteName="gdrive_vfs" # Name of rclone remote mount WITHOUT ':'. NOTE: C
 RcloneMountShare="/mnt/user/mount_rclone" # where your rclone remote will be located without trailing slash  e.g. /mnt/user/mount_rclone
 LocalFilesShare="/mnt/user/local" # location of the local files and MountFolders you want to upload without trailing slash to rclone e.g. /mnt/user/local. Enter 'ignore' to disable
 MergerfsMountShare="/mnt/user/mount_mergerfs" # location without trailing slash  e.g. /mnt/user/mount_mergerfs. Enter 'ignore' to disable
-LocalCacheShare="/mnt/user/mount_mergerfs" # location to save local cache without trailing slash  e.g. /mnt/user/cache. Enter 'ignore' to disable
+LocalCacheShare="/mnt/user/cache" # location to save local cache without trailing slash  e.g. /mnt/user/cache. Enter 'ignore' to disable
 DockerStart="nzbget plex sonarr radarr ombi" # list of dockers, separated by space, to start once mergerfs mount verified. Remember to disable AUTOSTART for dockers added in docker settings page
 MountFolders=\{"downloads/complete,downloads/intermediate,downloads/seeds,movies,tv"\} # comma separated list of folders to create within the mount
 
