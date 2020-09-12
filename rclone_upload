@@ -120,18 +120,6 @@ else
 	DeleteEmpty=""
 fi
 
-#  Check --backup-directory
-if [[  $BackupJob == 'Y' ]]; then
-	echo "$(date "+%d.%m.%Y %T") INFO: *** Will backup to ${BackupRemoteLocation} and use  ${BackupRemoteDeletedLocation} as --backup-directory with ${BackupRetention} retention for ${RcloneUploadRemoteName}."
-	LocalFilesLocation="$LocalFilesShare"
-	BackupDir="--backup-dir $RcloneUploadRemoteName:$BackupRemoteDeletedLocation"
-else
-	BackupRemoteLocation=""
-	BackupRemoteDeletedLocation=""
-	BackupRetention=""
-	BackupDir=""
-fi
-
 # process files
 	rclone $RcloneCommand $LocalFilesLocation $RcloneUploadRemoteName: $ServiceAccount \
 	--user-agent="$RcloneUploadRemoteName" \
