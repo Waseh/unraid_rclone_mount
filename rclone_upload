@@ -184,8 +184,6 @@ if [[  $FileList != '' ]]; then
 	--exclude *.backup~* \
 	--exclude *.partial~* \
 	--drive-stop-on-upload-limit \
-	--track-renames \
-	--track-renames-strategy modtime \
 	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}" \
 	--delete-empty-src-dirs \
 	$IncludeFrom
