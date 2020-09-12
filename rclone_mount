@@ -3,6 +3,7 @@
 ######################
 #### Mount Script ####
 ######################
+###### Based on ######
 ### Version 0.96.7 ###
 ######################
 
@@ -11,8 +12,7 @@
 # INSTRUCTIONS
 # 1. Change the name of the rclone remote and shares to match your setup
 # 2. NOTE: enter RcloneRemoteName WITHOUT ':'
-# 3. Optional: include custom command and bind mount settings
-# 4. Optional: include extra folders in mergerfs mount
+# 3. Optional: include extra folders in mergerfs mount
 
 # REQUIRED SETTINGS
 RcloneRemoteName="gdrive_vfs" # Name of rclone remote mount WITHOUT ':'. NOTE: Choose your encrypted remote for sensitive data
