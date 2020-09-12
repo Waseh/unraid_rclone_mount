@@ -36,6 +36,9 @@ BWLimit3="12M"
 
 # OPTIONAL SETTINGS
 
+# File containing list of "Cloud only" files to be moved to the cloud from local storage
+FileList="" # Adds custom string to end of checker file.  Useful if you're running multiple jobs against the same remote.
+
 # Add name to upload job
 JobName="_daily_upload" # Adds custom string to end of checker file.  Useful if you're running multiple jobs against the same remote.
 
@@ -120,6 +123,15 @@ else
 	DeleteEmpty=""
 fi
 
+#  Set exclusions
+if [[  $FileList != '' ]]; then
+	echo "$(date "+%d.%m.%Y %T") INFO: *** Cloud only files set - will add --exclude-from list to upload."
+	ExcludeFrom="--exclude-from $FileList "
+else
+	echo "$(date "+%d.%m.%Y %T") INFO: *** Not using Cloud only - No exclusion file set."
+	ExcludeFrom=""
+fi
+
 # process files
 	rclone $RcloneCommand $LocalFilesLocation $RcloneUploadRemoteName: $ServiceAccount \
 	--user-agent="$RcloneUploadRemoteName" \
@@ -144,7 +156,40 @@ fi
 	--track-renames \
 	--track-renames-strategy modtime \
 	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}" \
-	$DeleteEmpty
+	$DeleteEmpty \
+	$ExcludeFrom
+
+#  Move Clound only files
+if [[  $FileList != '' ]]; then
+	echo "$(date "+%d.%m.%Y %T") INFO: *** Cloud only files set - Starting Move job."
+	IncludeFrom="--include-from $FileList "
+	
+	rclone move $LocalFilesLocation $RcloneUploadRemoteName: $ServiceAccount \
+	--user-agent="$RcloneUploadRemoteName" \
+	-v \
+	--stats-log-level NOTICE\
+	--fast-list \
+	--buffer-size 512M \
+	--drive-chunk-size 512M \
+	--tpslimit 8 \
+	--checkers 8 \
+	--transfers 4 \
+	--order-by modtime,$ModSort \
+	--min-age $MinimumAge \
+	$Command1 $Command2 $Command3 $Command4 $Command5 $Command6 $Command7 $Command8 \
+	--exclude *fuse_hidden* \
+	--exclude *_HIDDEN \
+	--exclude .recycle** \
+	--exclude .Recycle.Bin/** \
+	--exclude *.backup~* \
+	--exclude *.partial~* \
+	--drive-stop-on-upload-limit \
+	--track-renames \
+	--track-renames-strategy modtime \
+	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}" \
+	--delete-empty-src-dirs \
+	$IncludeFrom
+fi
 
 #######  Remove Control Files  ##########
 
