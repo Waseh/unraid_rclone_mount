@@ -147,6 +147,7 @@ fi
 	--min-age $MinimumAge \
 	$Command1 $Command2 $Command3 $Command4 $Command5 $Command6 $Command7 $Command8 \
 	--exclude *fuse_hidden* \
+	--exclude *mountcheck* \
 	--exclude *_HIDDEN \
 	--exclude .recycle** \
 	--exclude .Recycle.Bin/** \
