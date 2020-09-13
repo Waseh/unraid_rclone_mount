@@ -122,6 +122,7 @@ else
 		echo "$(date "+%d.%m.%Y %T") CRITICAL: ${RcloneRemoteName} mount failed - please check for problems.  Stopping dockers"
 		docker stop $DockerStart
 		rm /mnt/user/appdata/other/rclone/remotes/$RcloneRemoteName/mount_running
+		rm /mnt/user/appdata/other/rclone/remotes/$RcloneRemoteName/dockers_started
 		exit
 	fi
 fi
