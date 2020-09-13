@@ -37,7 +37,7 @@ BWLimit3="12M"
 # OPTIONAL SETTINGS
 
 # File containing list of "Cloud only" files to be moved to the cloud from local storage
-FileList=""
+FileList="" # Location of exclusion/inclusion file e.g. /mnt/user/appdata/other/rclone/cloudonly.txt
 
 # Add name to upload job
 JobName="_daily_upload" # Adds custom string to end of checker file.  Useful if you're running multiple jobs against the same remote.
@@ -126,7 +126,7 @@ fi
 #  Set exclusions
 if [[  $FileList != '' ]]; then
 	echo "$(date "+%d.%m.%Y %T") INFO: *** Cloud only files set - will add --exclude-from list to upload."
-	ExcludeFrom="--exclude-from $FileList "
+	ExcludeFrom="--exclude-from $FileList"
 else
 	echo "$(date "+%d.%m.%Y %T") INFO: *** Not using Cloud only - No exclusion file set."
 	ExcludeFrom=""
@@ -162,7 +162,7 @@ fi
 #  Move Clound only files
 if [[  $FileList != '' ]]; then
 	echo "$(date "+%d.%m.%Y %T") INFO: *** Cloud only files set - Starting Move job."
-	IncludeFrom="--include-from $FileList "
+	IncludeFrom="--include-from $FileList"
 	
 	rclone move $LocalFilesLocation $RcloneUploadRemoteName: $ServiceAccount \
 	--user-agent="$RcloneUploadRemoteName" \
@@ -176,17 +176,10 @@ if [[  $FileList != '' ]]; then
 	--transfers 4 \
 	--order-by modtime,$ModSort \
 	--min-age $MinimumAge \
-	$Command1 $Command2 $Command3 $Command4 $Command5 $Command6 $Command7 $Command8 \
-	--exclude *fuse_hidden* \
-	--exclude *_HIDDEN \
-	--exclude .recycle** \
-	--exclude .Recycle.Bin/** \
-	--exclude *.backup~* \
-	--exclude *.partial~* \
+	$IncludeFrom \
 	--drive-stop-on-upload-limit \
 	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}" \
-	--delete-empty-src-dirs \
-	$IncludeFrom
+	--delete-empty-src-dirs
 fi
 
 #######  Remove Control Files  ##########
