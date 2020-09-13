@@ -20,7 +20,7 @@ RcloneCommand="move" # choose your rclone command e.g. move, copy, sync
 RcloneRemoteName="gdrive_vfs" # Name of rclone remote mount WITHOUT ':'.
 RcloneUploadRemoteName="gdrive_upload_vfs" # If you have a second remote created for uploads put it here.  Otherwise use the same remote as RcloneRemoteName.
 LocalFilesShare="/mnt/user/local" # location of the local files without trailing slash you want to rclone to use
-RcloneMountShare="/mnt/user/mount_rclone" # where your rclone mount is located without trailing slash  e.g. /mnt/user/mount_rclone
+RcloneMountShare="/mnt/user/mount_rclone/subfolder" # where your rclone mount is located without trailing slash  e.g. /mnt/user/mount_rclone/subfolder
 MinimumAge="15m" # sync files suffix ms|s|m|h|d|w|M|y
 ModSort="ascending" # "ascending" oldest files first, "descending" newest files first
 
