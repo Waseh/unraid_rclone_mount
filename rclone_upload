@@ -114,15 +114,6 @@ fi
 
 #######  Upload files  ##########
 
-#  Remove --delete-empty-src-dirs if rclone sync or copy
-if [[  $RcloneCommand == 'move' ]]; then
-	echo "$(date "+%d.%m.%Y %T") INFO: *** Using rclone move - will add --delete-empty-src-dirs to upload."
-	DeleteEmpty="--delete-empty-src-dirs "
-else
-	echo "$(date "+%d.%m.%Y %T") INFO: *** Not using rclone move - will remove --delete-empty-src-dirs to upload."
-	DeleteEmpty=""
-fi
-
 #  Set exclusions
 if [[  $FileList != '' ]]; then
 	echo "$(date "+%d.%m.%Y %T") INFO: *** Cloud only files set - will add --exclude-from list to upload."
@@ -157,7 +148,6 @@ fi
 	--track-renames \
 	--track-renames-strategy modtime \
 	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}" \
-	$DeleteEmpty \
 	$ExcludeFrom
 
 #  Move Clound only files
@@ -179,8 +169,7 @@ if [[  $FileList != '' ]]; then
 	--min-age $MinimumAge \
 	$IncludeFrom \
 	--drive-stop-on-upload-limit \
-	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}" \
-	--delete-empty-src-dirs
+	--bwlimit "${BWLimit1Time},${BWLimit1} ${BWLimit2Time},${BWLimit2} ${BWLimit3Time},${BWLimit3}"
 fi
 
 #######  Remove Control Files  ##########
