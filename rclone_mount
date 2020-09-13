@@ -195,6 +195,7 @@ else
 			echo "$(date "+%d.%m.%Y %T") CRITICAL: ${RcloneRemoteName} mergerfs mount failed.  Stopping dockers."
 			docker stop $DockerStart
 			rm /mnt/user/appdata/other/rclone/remotes/$RcloneRemoteName/mount_running
+			rm /mnt/user/appdata/other/rclone/remotes/$RcloneRemoteName/dockers_started
 			exit
 		fi
 	fi
